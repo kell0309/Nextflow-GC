@@ -8,7 +8,7 @@ process gcFilter {
 
   input:
   path fasta
-  val cutoff
+  val  cutoff
   path rscript
 
   output:
