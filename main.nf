@@ -1,27 +1,31 @@
 #!/usr/bin/env nextflow
 
 params.inputFile = null
-params.cutoff = null
-
+params.cutoff    = 0.5
 
 process gcFilter {
 
   input:
   path fasta
   val  cutoff
-  path rscript
 
   output:
   path "output.txt"
 
   script:
   """
-  Rscript "$rscript" "$fasta" "$cutoff"
+  Rscript GCcontent.R "$fasta" "$cutoff"
   """
 }
 
 workflow {
-  ch_fasta = Channel.fromPath(params.inputFile)
-  ch_r     = Channel.fromPath('GCcontent.R')
-  gcFilter(ch_fasta, params.cutoff, ch_r)
+  Channel
+    .fromPath(params.inputFile)
+    .set { ch_fasta }
+
+  Channel
+    .value(params.cutoff)
+    .set { ch_cutoff }
+
+  gcFilter(ch_fasta, ch_cutoff)
 }
