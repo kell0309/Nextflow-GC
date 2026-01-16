@@ -14,7 +14,8 @@ process gcFilter {
 
   script:
   """
-  Rscript GCcontent.R "$fasta" "$cutoff"
+  Rscript "${projectDir}/GCcontent.R" "$fasta" "$cutoff"
+
   """
 }
 
